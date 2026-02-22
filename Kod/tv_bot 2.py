@@ -16,8 +16,8 @@ from selenium.webdriver.common.action_chains import ActionChains
 # ==========================================
 # --- BOT AYARLARI ---
 # ==========================================
-CEKILECEK_HISSELER = ["BIST:AKBNK"]
-PERIYOT = "60"                # 15, 60, D, W, M
+# CEKILECEK_HISSELER = ["BIST:ASELS"]
+PERIYOT = "15"                # 15, 60, D, W, M
 HEDEF_TARIH = "2020-01-01"   # YYYY-MM-DD
 INDIRME_KLASORU = r"D:\Tradingview Bot\Veriler\1 saat" # Klasör yolun
 # ==========================================
@@ -160,6 +160,20 @@ def download_bist_data():
             
     print("\nTüm işlemler tamamlandı, bot kapatılıyor.")
     driver.quit()
+def download_bist_data():
+    # ... (Bot ayarları kısmı aynı kalacak) ...
+    
+    # Hisseleri txt dosyasından otomatik oku
+    try:
+        with open("bist_semboller.txt", "r", encoding="utf-8") as dosya:
+            # Satır sonlarındaki boşlukları (\n) temizleyerek listeye al
+            CEKILECEK_HISSELER = [satir.strip() for satir in dosya.readlines() if satir.strip()]
+        print(f"Toplam {len(CEKILECEK_HISSELER)} hisse indirme kuyruğuna alındı.")
+    except FileNotFoundError:
+        print("HATA: 'bist_semboller.txt' bulunamadı. Önce liste_cekici.py'yi çalıştırın.")
+        return
+
+    # ... (Kalan tarayıcı başlatma ve for döngüsü kısımları aynen devam edecek) ...
 
 if __name__ == "__main__":
     download_bist_data()
